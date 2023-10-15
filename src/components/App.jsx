@@ -1,38 +1,51 @@
-import { Component } from 'react';
+import { useReducer } from 'react';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { GlobalStyle } from './Globalstyle';
 import { Statistics } from './Statistics/Statistics';
 import { Notification } from './Notification/Notification';
+const initialState = {
+  good: 0,
+  neutral: 0,
+  bad: 0,
+};
+function reducer(state, action) {
+  switch (action.type) {
+    case 'good':
+      return { ...state, good: state.good + 1 };
+    case 'neutral':
+      return { ...state, neutral: state.neutral + 1 };
+    case 'bad':
+      return { ...state, bad: state.bad + 1 };
+    default:
+      throw new Error();
+  }
+}
+export const App = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-
-export class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+  const incrementValue = type => {
+    dispatch({ type });
+    // this.setState(prevState => ({ [type]: prevState[type] + 1 }));
   };
-  incrementValue = type => {
-    this.setState(prevState => ({ [type]: prevState[type] + 1 }));
-  };
 
-  countTotalFeedback = () => {
-    return Object.values(this.state).reduce((acc, number) => {
+  const countTotalFeedback = () => {
+    return Object.values(state).reduce((acc, number) => {
       return acc + number;
     });
   };
 
-  countPositiveFeedbackPercentage = total => {
-    return `${Math.round((this.state.good * 100) / total || 0)}`;
+  const countPositiveFeedbackPercentage = total => {
+    return `${Math.round((state.good * 100) / total || 0)}`;
   };
 
-  checkCondition = () => {
-    const { good, bad, neutral } = this.state;
+  const checkCondition = () => {
+    const { good, bad, neutral } = state;
     if (good !== 0 || bad !== 0 || neutral !== 0) {
       return (
         <Statistics
-          state={this.state}
-          onTotal={this.countTotalFeedback}
-          onPositivePercentage={this.countPositiveFeedbackPercentage}
+          state={state}
+          onTotal={countTotalFeedback}
+          onPositivePercentage={countPositiveFeedbackPercentage}
         />
       );
     } else {
@@ -40,13 +53,11 @@ export class App extends Component {
     }
   };
 
-  render() {
-    return (
-      <>
-        <GlobalStyle />
-        <FeedbackOptions incrementValue={this.incrementValue} />
-        {this.checkCondition()}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <GlobalStyle />
+      <FeedbackOptions incrementValue={incrementValue} />
+      {checkCondition()}
+    </>
+  );
+};

@@ -3,21 +3,21 @@ export const List = styled.ul`
   padding: 0;
   display: flex;
   list-style: none;
-  gap: 40px;
+  gap: 50px;
 `;
 
 export const Button = styled.button`
-  padding: 15px 10px;
-  min-width: 100px;
+  padding: 10px 5px;
+  min-width: 90px;
   border-radius: 5px;
-  border: 1px solid bclack;
-  background-color: white;
+  border: none;
+  background-color: #4682b4;
   cursor: pointer;
   font-size: 18px;
   font-weight: 600;
-  transition: background-color 400ms linear;
-  color: black;
+  transition: background-color 300ms linear;
+  color: white;
   &:hover {
-    background-color: blue;
+    background-color: #4169e1;
   }
-  `;
+`;
