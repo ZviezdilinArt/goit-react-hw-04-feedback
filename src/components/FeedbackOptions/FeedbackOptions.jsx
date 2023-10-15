@@ -25,3 +25,4 @@ export const FeedbackOptions = ({
     FeedbackOptions.propTypes = {
         incrementValue: PropTypes.func,
       };
+      
